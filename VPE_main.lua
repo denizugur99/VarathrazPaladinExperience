@@ -174,6 +174,7 @@ frame:RegisterEvent("UNIT_AURA")
 local loginLastPlayed = nil
 frame:SetScript("OnEvent", function(_, event, ...)
     if event == "PLAYER_ENTERING_WORLD" then
+        prevMounted = IsMounted()
         local now = GetTime()
         if not loginLastPlayed or (now - loginLastPlayed) >= 3600 then
             loginLastPlayed = now
