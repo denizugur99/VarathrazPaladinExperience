@@ -27,10 +27,10 @@ local VPE_lastPlayed = {}
 local ADDON_PATH = "Interface\\AddOns\\VarathrazPaladinExperience\\sounds\\"
 
 local function PlayRandom(category, force, protectDuration)
-    if not VPE_soundEnabled then return end
+    if not VPE_soundEnabled then VPE_Debug("PlayRandom: ses kapalı") return end
     local now = GetTime()
-    if not force and not CanPlay() then return end
-    if force and now < VPE_playLock then return end
+    if not force and not CanPlay() then VPE_Debug("PlayRandom: global CD engelledi") return end
+    if force and now < VPE_playLock then VPE_Debug("PlayRandom: playLock engelledi (lock=" .. VPE_playLock .. " now=" .. now .. ")") return end
 
     local sounds = VPE_Sounds[category]
     if not sounds or #sounds == 0 then return end
@@ -62,6 +62,7 @@ local function PlayRandom(category, force, protectDuration)
 
     VPE_Debug("[" .. category .. "] playing: " .. chosen)
     local ok, _, handle = pcall(PlaySoundFile, ADDON_PATH .. chosen, "Dialog")
+    VPE_Debug("PlayRandom: pcall ok=" .. tostring(ok) .. " handle=" .. tostring(handle))
     if ok and handle and protectDuration then
         VPE_playLock = now + protectDuration
     end
@@ -109,10 +110,10 @@ VPE_Sounds = {
 -- spellID → { cat, prob, force, anyCombat, protect }
 local SpellToSound = {
     -- Major cooldowns (bypass global CD, lock out other sounds)
-    [31884]  = { cat = "WINGS",          prob = 1.0, force = true,  anyCombat = true, protect = 6 }, -- Avenging Wrath (Retribution)
-    [255937] = { cat = "WINGS",          prob = 1.0, force = true,  anyCombat = true, protect = 6 }, -- Wake of Ashes (Radiant Glory → Avenging Wrath proc)
-    [216331] = { cat = "WINGS",          prob = 1.0, force = true,  anyCombat = true,protect = 6  }, -- Avenging Crusader (Holy)
-    [389539] = { cat = "WINGS",          prob = 1.0, force = true,  anyCombat = true, protect = 6 }, -- Sentinel (Prot choice node)
+    [31884]  = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Wrath
+    [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Crusader
+    [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Sentinel
+    [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Wake of Ashes (Radiant Glory)
     [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true},
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0, force = true,  anyCombat = true },              
@@ -161,7 +162,7 @@ local prevCombat    = false
 local prevMounted   = false
 local prevAFK       = false
 local prevSelfTarget = false
-local prevWingsActive = false
+local afkSoundHandle  = nil
 local pollTimer     = 0
 local POLL          = 0.2
 
@@ -169,7 +170,6 @@ local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("UNIT_SPELLCAST_SENT")
 frame:RegisterEvent("UNIT_SPELLCAST_START")
-frame:RegisterEvent("UNIT_AURA")
 
 local loginLastPlayed = nil
 frame:SetScript("OnEvent", function(_, event, ...)
@@ -185,20 +185,8 @@ frame:SetScript("OnEvent", function(_, event, ...)
         local unit, _, _, spellID = ...
         if unit == "player" then HandleResolvedSpell(spellID, false) end
     elseif event == "UNIT_SPELLCAST_START" then
-        -- params: unit, castGUID, spellID
         local unit, _, spellID = ...
         if unit == "player" then HandleResolvedSpell(spellID, true) end
-    elseif event == "UNIT_AURA" then
-        local unit = ...
-        if unit == "player" then
-            local i = 1
-            while true do
-                local aura = C_UnitAuras.GetAuraDataByIndex("player", i, "HELPFUL")
-                if not aura then break end
-                VPE_Debug("UNIT_AURA buff[" .. i .. "] " .. aura.name .. " id=" .. (aura.spellId or 0))
-                i = i + 1
-            end
-        end
     end
 end)
 
@@ -240,9 +228,16 @@ frame:SetScript("OnUpdate", function(_, elapsed)
     local isAFK = UnitIsAFK("player")
     if isAFK and not prevAFK then
         VPE_Debug("state: AFK")
-        PlayRandom("AFKSTART", true)
+        if VPE_soundEnabled then
+            local _, _, handle = pcall(PlaySoundFile, ADDON_PATH .. "afkstart\\afkmusic_1.mp3", "Dialog")
+            afkSoundHandle = handle
+        end
     elseif not isAFK and prevAFK then
         VPE_Debug("state: AFKEND")
+        if afkSoundHandle then
+            StopSound(afkSoundHandle)
+            afkSoundHandle = nil
+        end
         PlayRandom("AFKEND", true)
     end
     prevAFK = isAFK
@@ -255,15 +250,6 @@ frame:SetScript("OnUpdate", function(_, elapsed)
     end
     prevSelfTarget = selfTarget
 
-    -- Wings buff — sadece pasif proc / otomatik aktivasyon (Avenging Crusader, Sentinel)
-    -- 31884 (Avenging Wrath) SENT'ten yakalanıyor, buraya gerek yok
-    local wingsActive = C_UnitAuras.GetPlayerAuraBySpellID(216331) ~= nil
-                     or C_UnitAuras.GetPlayerAuraBySpellID(389539) ~= nil
-    if wingsActive and not prevWingsActive then
-        VPE_Debug("state: WINGS (buff proc)")
-        PlayRandom("WINGS", true, 20)
-    end
-    prevWingsActive = wingsActive
 end)
 
 -- Slash command: /vpe on | off | cd <seconds>
