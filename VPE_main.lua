@@ -109,10 +109,10 @@ VPE_Sounds = {
 -- spellID → { cat, prob, force, anyCombat, protect }
 local SpellToSound = {
     -- Major cooldowns (bypass global CD, lock out other sounds)
-    [31884]  = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Wrath
-    [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Crusader
-    [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Sentinel
-    [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6, requiresSpell = 458359 }, -- Wake of Ashes (sadece Radiant Glory alındıysa)
+    [31884]  = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Avenging Wrath
+    [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Avenging Crusader
+    [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Sentinel
+    [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3, requiresSpell = 458359 }, -- Wake of Ashes 
     [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true},
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0, force = true,  anyCombat = true },              
