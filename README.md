@@ -34,7 +34,7 @@ All sounds play through the **Dialog** channel.
 
 **Spell sounds** are detected via `UNIT_SPELLCAST_SENT` (instant/off-GCD spells) or `UNIT_SPELLCAST_START` (channeled/cast-time spells marked with `onCastStart`).
 
-**Global cooldown:** A 2-second cooldown (configurable) prevents multiple sounds from stacking. Major cooldowns bypass this with `force = true` and can lock out other sounds for a set duration (`protect`).
+**Global cooldown:** A 2-second cooldown (configurable) prevents multiple sounds from stacking. Force sounds bypass the global cooldown and always cut whatever is currently playing. Force sounds cut each other; non-force sounds never stop a force sound (they either play on top or are blocked by the protect window). A `protect` duration locks out non-force sounds after a force sound plays.
 
 **Repeat penalty:** The last-played file in each category receives 10% of its normal weight in the random roll, reducing back-to-back repeats.
 
@@ -46,7 +46,7 @@ All sounds play through the **Dialog** channel.
 
 | Event | Category | Chance | Notes |
 |-------|----------|--------|-------|
-| Login / reload | LOGIN | 100% | Once per hour |
+| Login / reload | LOGIN | 100% | Once per hour; force, 12s protect |
 | Self-target | SELECT | 100% | |
 | Enter combat | AGGRO | 33% | |
 | Player death | DEATH | 100% | |
@@ -57,35 +57,35 @@ All sounds play through the **Dialog** channel.
 
 ### Spell Sounds
 
-| Spell | Spell ID | Category | Chance | Force | Out of Combat |
-|-------|----------|----------|--------|-------|---------------|
-| Avenging Wrath | 31884 | WINGS | 100% | ✓ | ✓ |
-| Avenging Crusader | 216331 | WINGS | 100% | ✓ | ✓ |
-| Sentinel | 389539 | WINGS | 100% | ✓ | ✓ |
-| Wake of Ashes ¹ | 255937 | WINGS | 100% | ✓ | ✓ |
-| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | ✓ |
-| Divine Shield | 642 | BUBBLE | 100% | ✓ | ✓ |
-| Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | ✓ |
-| Guardian of Ancient Kings | 86659 | ANCIENTKINGS | 100% | ✓ | ✓ |
-| Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | ✓ |
-| Intercession | 391054 | CR | 100% | ✓ | ✓ |
-| Redemption (on ally) | 7328 | REVIVE | 100% | | ✓ |
-| Mass Resurrection | 212056 | ABSOLUTION | 100% | | ✓ |
-| Beacon of Light | 53563 | BEACON | 100% | | ✓ |
-| Beacon of Faith | 156910 | BEACON | 100% | | ✓ |
-| Beacon of Virtue | 200025 | BEACON | 100% | | ✓ |
-| Blessing of Freedom | 1044 | FREEDOM | 100% | | ✓ |
-| Blessing of Protection | 1022 | BOP | 100% | | ✓ |
-| Blessing of Spellwarding | 204018 | SPELLWARDING | 100% | | ✓ |
-| Divine Steed | 190784 | DIVINESTEED | 100% | | ✓ |
-| Blinding Light | 115750 | BLINDINGLIGHT | 100% | | ✓ |
-| Divine Protection | 498, 403876 | DIVINEPROTECTION | 100% | | ✓ |
-| Blessing of Sacrifice | 6940 | SACRIFICE | 100% | | ✓ |
-| Cleanse | 4987 | CLEANSE | 100% | | ✓ |
-| Cleanse Toxins | 213644 | CLEANSE | 100% | | ✓ |
-| Hand of Reckoning | 62124 | TAUNT | 100% | | ✓ |
-| Hammer of Justice | 853 | STUN | 100% | | ✓ |
-| Rebuke | 96231 | INTERRUPT | 100% | | ✓ |
+| Spell | Spell ID | Category | Chance | Force | Protect | Out of Combat |
+|-------|----------|----------|--------|-------|---------|---------------|
+| Avenging Wrath | 31884 | WINGS | 100% | ✓ | 3s | ✓ |
+| Avenging Crusader | 216331 | WINGS | 100% | ✓ | 3s | ✓ |
+| Sentinel | 389539 | WINGS | 100% | ✓ | 3s | ✓ |
+| Wake of Ashes ¹ | 255937 | WINGS | 100% | ✓ | 3s | ✓ |
+| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | — | ✓ |
+| Divine Shield | 642 | BUBBLE | 100% | ✓ | — | ✓ |
+| Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | — | ✓ |
+| Guardian of Ancient Kings | 86659 | ANCIENTKINGS | 100% | ✓ | — | ✓ |
+| Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | — | ✓ |
+| Intercession | 391054 | CR | 100% | ✓ | — | ✓ |
+| Redemption (on ally) | 7328 | REVIVE | 100% | | — | ✓ |
+| Mass Resurrection | 212056 | ABSOLUTION | 100% | | — | ✓ |
+| Beacon of Light | 53563 | BEACON | 100% | | — | ✓ |
+| Beacon of Faith | 156910 | BEACON | 100% | | — | ✓ |
+| Beacon of Virtue | 200025 | BEACON | 100% | | — | ✓ |
+| Blessing of Freedom | 1044 | FREEDOM | 100% | | — | ✓ |
+| Blessing of Protection | 1022 | BOP | 100% | | — | ✓ |
+| Blessing of Spellwarding | 204018 | SPELLWARDING | 100% | | — | ✓ |
+| Divine Steed | 190784 | DIVINESTEED | 100% | | — | ✓ |
+| Blinding Light | 115750 | BLINDINGLIGHT | 100% | | — | ✓ |
+| Divine Protection | 498, 403876 | DIVINEPROTECTION | 100% | | — | ✓ |
+| Blessing of Sacrifice | 6940 | SACRIFICE | 100% | | — | ✓ |
+| Cleanse | 4987 | CLEANSE | 100% | | — | ✓ |
+| Cleanse Toxins | 213644 | CLEANSE | 100% | | — | ✓ |
+| Hand of Reckoning | 62124 | TAUNT | 100% | | — | ✓ |
+| Hammer of Justice | 853 | STUN | 100% | | — | ✓ |
+| Rebuke | 96231 | INTERRUPT | 100% | | — | ✓ |
 
 ¹ Wake of Ashes only triggers WINGS if the **Radiant Glory** talent (458359) is learned.
 

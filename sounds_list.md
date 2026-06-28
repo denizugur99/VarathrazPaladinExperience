@@ -4,8 +4,9 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 
 **System rules:**
 - Global cooldown: 2 seconds between sounds (configurable via `/vpe cd`)
-- `Force` sounds bypass the global cooldown
-- `Protect` locks out all other sounds for the specified duration after a force sound plays
+- `Force` sounds bypass the global cooldown and always cut whatever is currently playing
+- `Force` sounds cut each other; a non-force sound never cuts a force sound (plays silently on top or is blocked by protect)
+- `Protect` locks out non-force sounds for the specified duration; force sounds still break through protect
 - Last-played file in each category receives 10% weight in the random roll to reduce repeats
 
 ---
@@ -16,7 +17,7 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 
 | Event | Category | Chance | Notes |
 |-------|----------|--------|-------|
-| Login / reload | LOGIN | 100% | Once per hour |
+| Login / reload | LOGIN | 100% | Once per hour; Force, 12s protect |
 | Self-target | SELECT | 100% | |
 | Enter combat | AGGRO | 33% | |
 | Player death | DEATH | 100% | |
@@ -29,10 +30,10 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 
 | Spell | Spell ID | Category | Chance | Force | Protect | Out of Combat | Notes |
 |-------|----------|----------|--------|-------|---------|---------------|-------|
-| Avenging Wrath | 31884 | WINGS | 100% | ✓ | 6s | ✓ | |
-| Avenging Crusader | 216331 | WINGS | 100% | ✓ | 6s | ✓ | |
-| Sentinel | 389539 | WINGS | 100% | ✓ | 6s | ✓ | |
-| Wake of Ashes | 255937 | WINGS | 100% | ✓ | 6s | ✓ | Requires Radiant Glory (458359) |
+| Avenging Wrath | 31884 | WINGS | 100% | ✓ | 3s | ✓ | |
+| Avenging Crusader | 216331 | WINGS | 100% | ✓ | 3s | ✓ | |
+| Sentinel | 389539 | WINGS | 100% | ✓ | 3s | ✓ | |
+| Wake of Ashes | 255937 | WINGS | 100% | ✓ | 3s | ✓ | Requires Radiant Glory (458359) |
 | Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | — | ✓ | |
 | Divine Shield | 642 | BUBBLE | 100% | ✓ | — | ✓ | |
 | Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | — | ✓ | |
