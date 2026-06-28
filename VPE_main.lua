@@ -13,6 +13,8 @@ local function VPE_Debug(msg)
 end
 local VPE_lastSoundTime = 0
 local VPE_playLock = 0
+local VPE_currentHandle  = nil
+local VPE_currentIsForce = false
 
 local function CanPlay()
     local now = GetTime()
@@ -29,8 +31,15 @@ local ADDON_PATH = "Interface\\AddOns\\VarathrazPaladinExperience\\sounds\\"
 local function PlayRandom(category, force, protectDuration)
     if not VPE_soundEnabled then return end
     local now = GetTime()
-    if not force and not CanPlay() then return end
-    if force and now < VPE_playLock then return end
+
+    if force then
+        -- Force: her zaman çalar, global CD'yi sıfırlar
+        VPE_lastSoundTime = now
+    else
+        -- Non-force: protect aktifse veya global CD dolmadıysa çalmaz
+        if now < VPE_playLock then return end
+        if not CanPlay() then return end
+    end
 
     local sounds = VPE_Sounds[category]
     if not sounds or #sounds == 0 then return end
@@ -58,13 +67,21 @@ local function PlayRandom(category, force, protectDuration)
     if not chosen then chosen = sounds[#sounds][1] end
 
     VPE_lastPlayed[category] = chosen
-    if force then VPE_lastSoundTime = now end
+
+    -- Force: mevcut her sesi durdurur (protect dahil)
+    -- Non-force: sadece non-force sesi durdurur
+    if force then
+        if VPE_currentHandle then pcall(StopSound, VPE_currentHandle) end
+        VPE_playLock = 0
+    elseif not VPE_currentIsForce and VPE_currentHandle then
+        pcall(StopSound, VPE_currentHandle)
+    end
 
     VPE_Debug("[" .. category .. "] playing: " .. chosen)
-    local ok, _, handle = pcall(PlaySoundFile, ADDON_PATH .. chosen, "Dialog")
-    if ok and handle and protectDuration then
-        VPE_playLock = now + protectDuration
-    end
+    local ok, success, handle = pcall(PlaySoundFile, ADDON_PATH .. chosen, "Dialog")
+    VPE_currentHandle  = (ok and success) and handle or nil
+    VPE_currentIsForce = force or false
+    if protectDuration then VPE_playLock = now + protectDuration end
 end
 
 VPE_Sounds = {
@@ -98,7 +115,7 @@ VPE_Sounds = {
     SPELLWARDING   = { {"spellwarding\\spellwarding_1.ogg", 1} },
     SACRIFICE      = { {"sacrifice\\sacrifice_1.ogg", 1} },
     TAUNT          = { {"taunt\\taunt_1.ogg", 1} },
-    WINGS          = { {"wings\\wings_1.ogg", 1}, {"wings\\wings_2.ogg", 1}, {"wings\\wings_3.ogg", 1} },
+    WINGS          = { {"wings\\wings_3.ogg", 1} },
     AURAMASTERY    = { {"auramastery\\auramastery_1.ogg", 1} },
     ARDENTDEFENDER = { {"ardentdefender\\ardentdefender_1.ogg", 1} },
     ANCIENTKINGS   = { {"ancientkings\\ancientkings.ogg", 1} },
@@ -116,9 +133,9 @@ local SpellToSound = {
     [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
     [471195] = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
-    [31821]  = { cat = "AURAMASTERY",    prob = 1.0, force = true,  anyCombat = true },              
+    [31821]  = { cat = "AURAMASTERY",    prob = 1.0,   anyCombat = true },              
     [86659]  = { cat = "ANCIENTKINGS",   prob = 1.0, force = true,  anyCombat = true },
-    [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0, force = true,    anyCombat = true },               
+    [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0,     anyCombat = true },               
     [391054] = { cat = "CR",             prob = 1.0, force = true,  anyCombat = true  }, -- Intercession (combat res)
     [7328]   = { cat = "REVIVE",      prob = 1.0, anyCombat = true, onCastStart = true ,protect = 8},  -- Redemption (res on ally)
     -- Cast-start triggers (onCastStart = true → fires on UNIT_SPELLCAST_START, not SENT)
