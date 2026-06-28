@@ -46,7 +46,7 @@ All sounds play through the **Dialog** channel.
 
 | Event | Category | Chance | Notes |
 |-------|----------|--------|-------|
-| Login / reload | LOGIN | 100% | Once per hour; force, 12s protect |
+| Login / reload | LOGIN | 100% | Once per hour; force, 7s protect |
 | Self-target | SELECT | 100% | |
 | Enter combat | AGGRO | 33% | |
 | Player death | DEATH | 100% | |
