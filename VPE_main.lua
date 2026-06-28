@@ -197,7 +197,7 @@ frame:SetScript("OnEvent", function(_, event, ...)
         local now = GetTime()
         if not loginLastPlayed or (now - loginLastPlayed) >= 3600 then
             loginLastPlayed = now
-            PlayRandom("LOGIN")
+            PlayRandom("LOGIN", true, 12)
         end
     elseif event == "UNIT_SPELLCAST_SENT" then
         -- params: unit, target, castGUID, spellID
