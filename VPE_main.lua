@@ -113,15 +113,16 @@ local SpellToSound = {
     [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Avenging Crusader
     [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Sentinel
     [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3, requiresSpell = 458359 }, -- Wake of Ashes 
-    [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true},
+    [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
+    [471195] = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0, force = true,  anyCombat = true },              
     [86659]  = { cat = "ANCIENTKINGS",   prob = 1.0, force = true,  anyCombat = true },
-    [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0, force = true,                    },
+    [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0, force = true,    anyCombat = true },               
     [391054] = { cat = "CR",             prob = 1.0, force = true,  anyCombat = true  }, -- Intercession (combat res)
-    [7328]   = { cat = "REVIVE",      prob = 1.0, anyCombat = true, onCastStart = true },  -- Redemption (res on ally)
+    [7328]   = { cat = "REVIVE",      prob = 1.0, anyCombat = true, onCastStart = true ,protect = 8},  -- Redemption (res on ally)
     -- Cast-start triggers (onCastStart = true → fires on UNIT_SPELLCAST_START, not SENT)
-    [212056] = { cat = "ABSOLUTION",  prob = 1.0, anyCombat = true, onCastStart = true }, -- Mass Resurrection / Absolution (verify ID in-game)
+    [212056] = { cat = "ABSOLUTION",  prob = 1.0, anyCombat = true, onCastStart = true,protect = 8 }, -- Mass Resurrection / Absolution (verify ID in-game)
     -- Utility / off-GCD (allow outside combat)
     [53563]  = { cat = "BEACON",         prob = 1.0, anyCombat = true }, -- Beacon of Light
     [156910] = { cat = "BEACON",         prob = 1.0, anyCombat = true }, -- Beacon of Faith
@@ -132,13 +133,14 @@ local SpellToSound = {
     [190784] = { cat = "DIVINESTEED",    prob = 1.0, anyCombat = true },
     [115750] = { cat = "BLINDINGLIGHT",  prob = 1.0, anyCombat = true },
     [498]    = { cat = "DIVINEPROTECTION", prob = 1.0, anyCombat = true },
+    [403876] = { cat = "DIVINEPROTECTION", prob = 1.0, anyCombat = true },
     -- Combat spells
-    [6940]   = { cat = "SACRIFICE",  prob = 1.0 },
-    [4987]   = { cat = "CLEANSE",    prob = 1.0 },           -- Cleanse (Holy)
-    [213644] = { cat = "CLEANSE",    prob = 1.0 },           -- Cleanse Toxins (Prot/Ret)
-    [62124]  = { cat = "TAUNT",      prob = 1.0 },
-    [853]    = { cat = "STUN",       prob = 1.0 },
-    [96231]  = { cat = "INTERRUPT",  prob = 1.0 },
+    [6940]   = { cat = "SACRIFICE",  prob = 1.0 ,    anyCombat = true },
+    [4987]   = { cat = "CLEANSE",    prob = 1.0 ,    anyCombat = true },           -- Cleanse (Holy)
+    [213644] = { cat = "CLEANSE",    prob = 1.0 ,    anyCombat = true },           -- Cleanse Toxins (Prot/Ret)
+    [62124]  = { cat = "TAUNT",      prob = 1.0 ,anyCombat = true  },
+    [853]    = { cat = "STUN",       prob = 1.0 ,    anyCombat = true },
+    [96231]  = { cat = "INTERRUPT",  prob = 1.0 ,    anyCombat = true },
 }
 
 local function HandleResolvedSpell(spellID, fromCastStart)

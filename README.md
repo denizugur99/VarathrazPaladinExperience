@@ -63,11 +63,11 @@ All sounds play through the **Dialog** channel.
 | Avenging Crusader | 216331 | WINGS | 100% | ✓ | ✓ |
 | Sentinel | 389539 | WINGS | 100% | ✓ | ✓ |
 | Wake of Ashes ¹ | 255937 | WINGS | 100% | ✓ | ✓ |
-| Lay on Hands | 633 | LAYONHANDS | 100% | ✓ | ✓ |
+| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | ✓ |
 | Divine Shield | 642 | BUBBLE | 100% | ✓ | ✓ |
 | Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | ✓ |
 | Guardian of Ancient Kings | 86659 | ANCIENTKINGS | 100% | ✓ | ✓ |
-| Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | |
+| Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | ✓ |
 | Intercession | 391054 | CR | 100% | ✓ | ✓ |
 | Redemption (on ally) | 7328 | REVIVE | 100% | | ✓ |
 | Mass Resurrection | 212056 | ABSOLUTION | 100% | | ✓ |
@@ -79,13 +79,13 @@ All sounds play through the **Dialog** channel.
 | Blessing of Spellwarding | 204018 | SPELLWARDING | 100% | | ✓ |
 | Divine Steed | 190784 | DIVINESTEED | 100% | | ✓ |
 | Blinding Light | 115750 | BLINDINGLIGHT | 100% | | ✓ |
-| Divine Protection | 498 | DIVINEPROTECTION | 100% | | ✓ |
-| Blessing of Sacrifice | 6940 | SACRIFICE | 100% | | |
-| Cleanse | 4987 | CLEANSE | 100% | | |
-| Cleanse Toxins | 213644 | CLEANSE | 100% | | |
-| Hand of Reckoning | 62124 | TAUNT | 100% | | |
-| Hammer of Justice | 853 | STUN | 100% | | |
-| Rebuke | 96231 | INTERRUPT | 100% | | |
+| Divine Protection | 498, 403876 | DIVINEPROTECTION | 100% | | ✓ |
+| Blessing of Sacrifice | 6940 | SACRIFICE | 100% | | ✓ |
+| Cleanse | 4987 | CLEANSE | 100% | | ✓ |
+| Cleanse Toxins | 213644 | CLEANSE | 100% | | ✓ |
+| Hand of Reckoning | 62124 | TAUNT | 100% | | ✓ |
+| Hammer of Justice | 853 | STUN | 100% | | ✓ |
+| Rebuke | 96231 | INTERRUPT | 100% | | ✓ |
 
 ¹ Wake of Ashes only triggers WINGS if the **Radiant Glory** talent (458359) is learned.
 
