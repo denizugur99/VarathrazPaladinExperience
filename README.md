@@ -46,7 +46,7 @@ All sounds play through the **Dialog** channel.
 
 | Event | Category | Chance | Notes |
 |-------|----------|--------|-------|
-| Login / reload | LOGIN | 100% | Once per hour; force, 7s protect |
+| Login / reload | LOGIN | 100% | Once per hour; force, 7–12s protect ³ |
 | Self-target | SELECT | 100% | |
 | Enter combat | AGGRO | 33% | |
 | Player death | DEATH | 100% | |
@@ -63,12 +63,12 @@ All sounds play through the **Dialog** channel.
 | Avenging Crusader | 216331 | WINGS | 100% | ✓ | 3s | ✓ |
 | Sentinel | 389539 | WINGS | 100% | ✓ | 3s | ✓ |
 | Wake of Ashes ¹ | 255937 | WINGS | 100% | ✓ | 3s | ✓ |
-| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | — | ✓ |
-| Divine Shield | 642 | BUBBLE | 100% | ✓ | — | ✓ |
+| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | 3s | ✓ |
+| Divine Shield | 642 | BUBBLE | 100% | ✓ | 3s | ✓ |
 | Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | — | ✓ |
 | Guardian of Ancient Kings | 86659 | ANCIENTKINGS | 100% | ✓ | — | ✓ |
 | Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | — | ✓ |
-| Intercession | 391054 | CR | 100% | ✓ | — | ✓ |
+| Intercession | 391054 | CR | 100% | ✓ | 1–4s ² | ✓ |
 | Redemption (on ally) | 7328 | REVIVE | 100% | | — | ✓ |
 | Mass Resurrection | 212056 | ABSOLUTION | 100% | | — | ✓ |
 | Beacon of Light | 53563 | BEACON | 100% | | — | ✓ |
@@ -88,6 +88,8 @@ All sounds play through the **Dialog** channel.
 | Rebuke | 96231 | INTERRUPT | 100% | | — | ✓ |
 
 ¹ Wake of Ashes only triggers WINGS if the **Radiant Glory** talent (458359) is learned.
+² CR protect duration varies per sound file: cr_1.ogg = 2s, cr_2.ogg = 4s, cr_3.ogg = 1s.
+³ Login protect duration varies per sound file: login_1.ogg = 12s, login_2.ogg = 7s.
 
 ---
 

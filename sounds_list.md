@@ -17,7 +17,7 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 
 | Event | Category | Chance | Notes |
 |-------|----------|--------|-------|
-| Login / reload | LOGIN | 100% | Once per hour; Force, 12s protect |
+| Login / reload | LOGIN | 100% | Once per hour; force, 7–12s protect (per file) |
 | Self-target | SELECT | 100% | |
 | Enter combat | AGGRO | 33% | |
 | Player death | DEATH | 100% | |
@@ -34,12 +34,12 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 | Avenging Crusader | 216331 | WINGS | 100% | ✓ | 3s | ✓ | |
 | Sentinel | 389539 | WINGS | 100% | ✓ | 3s | ✓ | |
 | Wake of Ashes | 255937 | WINGS | 100% | ✓ | 3s | ✓ | Requires Radiant Glory (458359) |
-| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | — | ✓ | |
-| Divine Shield | 642 | BUBBLE | 100% | ✓ | — | ✓ | |
+| Lay on Hands | 633, 471195 | LAYONHANDS | 100% | ✓ | 3s | ✓ | |
+| Divine Shield | 642 | BUBBLE | 100% | ✓ | 3s | ✓ | |
 | Aura Mastery | 31821 | AURAMASTERY | 100% | ✓ | — | ✓ | |
 | Guardian of Ancient Kings | 86659 | ANCIENTKINGS | 100% | ✓ | — | ✓ | |
 | Ardent Defender | 31850 | ARDENTDEFENDER | 100% | ✓ | — | ✓ | |
-| Intercession | 391054 | CR | 100% | ✓ | — | ✓ | Combat res |
+| Intercession | 391054 | CR | 100% | ✓ | 1–4s (per file) | ✓ | Combat res |
 | Redemption (on ally) | 7328 | REVIVE | 100% | | — | ✓ | onCastStart |
 | Mass Resurrection | 212056 | ABSOLUTION | 100% | | — | ✓ | onCastStart |
 | Beacon of Light | 53563 | BEACON | 100% | | — | ✓ | |
@@ -63,10 +63,10 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 ## Sound Files
 
 ### sounds/login/
-| File |
-|------|
-| login_1.ogg |
-| login_2.ogg |
+| File | Protect |
+|------|---------|
+| login_1.ogg | 12s |
+| login_2.ogg | 7s |
 
 ### sounds/select/
 | File |
@@ -153,11 +153,11 @@ All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) an
 | ardentdefender_1.ogg |
 
 ### sounds/cr/
-| File |
-|------|
-| cr_1.ogg |
-| cr_2.ogg |
-| cr_3.ogg |
+| File | Protect |
+|------|---------|
+| cr_1.ogg | 2s |
+| cr_2.ogg | 4s |
+| cr_3.ogg | 1s |
 
 ### sounds/absolution/
 | File |

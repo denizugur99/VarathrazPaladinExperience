@@ -33,10 +33,10 @@ local function PlayRandom(category, force, protectDuration)
     local now = GetTime()
 
     if force then
-        -- Force: her zaman çalar, global CD'yi sıfırlar
+        -- Force
         VPE_lastSoundTime = now
     else
-        -- Non-force: protect aktifse veya global CD dolmadıysa çalmaz
+        -- Non-force
         if now < VPE_playLock then return end
         if not CanPlay() then return end
     end
@@ -53,7 +53,7 @@ local function PlayRandom(category, force, protectDuration)
     end
 
     local roll = math.random() * totalWeight
-    local chosen
+    local chosen, chosenProtect
     local cumulative = 0
     for _, s in ipairs(sounds) do
         local w = s[2] or 1
@@ -61,10 +61,14 @@ local function PlayRandom(category, force, protectDuration)
         cumulative = cumulative + w
         if roll <= cumulative then
             chosen = s[1]
+            chosenProtect = s[3]
             break
         end
     end
-    if not chosen then chosen = sounds[#sounds][1] end
+    if not chosen then
+        chosen = sounds[#sounds][1]
+        chosenProtect = sounds[#sounds][3]
+    end
 
     VPE_lastPlayed[category] = chosen
 
@@ -81,11 +85,12 @@ local function PlayRandom(category, force, protectDuration)
     local ok, success, handle = pcall(PlaySoundFile, ADDON_PATH .. chosen, "Dialog")
     VPE_currentHandle  = (ok and success) and handle or nil
     VPE_currentIsForce = force or false
-    if protectDuration then VPE_playLock = now + protectDuration end
+    local effectiveProtect = chosenProtect or protectDuration
+    if effectiveProtect then VPE_playLock = now + effectiveProtect end
 end
 
 VPE_Sounds = {
-    LOGIN    = { {"login\\login_1.ogg", 1}, {"login\\login_2.ogg", 1} },
+    LOGIN    = { {"login\\login_1.ogg", 1, 12}, {"login\\login_2.ogg", 1, 7} },
     SELECT   = {
         {"select\\select_0.ogg", 1},
         {"select\\select_1.ogg", 1},
@@ -119,7 +124,7 @@ VPE_Sounds = {
     AURAMASTERY    = { {"auramastery\\auramastery_1.ogg", 1} },
     ARDENTDEFENDER = { {"ardentdefender\\ardentdefender_1.ogg", 1} },
     ANCIENTKINGS   = { {"ancientkings\\ancientkings.ogg", 1} },
-    CR             = { {"cr\\cr_1.ogg", 1}, {"cr\\cr_2.ogg", 1}, {"cr\\cr_3.ogg", 1} },
+    CR             = { {"cr\\cr_1.ogg", 1, 2}, {"cr\\cr_2.ogg", 1, 4}, {"cr\\cr_3.ogg", 1, 1} },
     ABSOLUTION     = { {"absolution\\absolution_1.ogg", 1} },
 }
 
@@ -130,9 +135,9 @@ local SpellToSound = {
     [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Avenging Crusader
     [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3 }, -- Sentinel
     [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 3, requiresSpell = 458359 }, -- Wake of Ashes 
-    [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
-    [471195] = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true },
-    [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
+    [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true, protect = 3 },
+    [471195] = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true, protect = 3 },
+    [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true, protect = 3 },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0,   anyCombat = true },              
     [86659]  = { cat = "ANCIENTKINGS",   prob = 1.0, force = true,  anyCombat = true },
     [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0,     anyCombat = true },               
@@ -197,7 +202,7 @@ frame:SetScript("OnEvent", function(_, event, ...)
         local now = GetTime()
         if not loginLastPlayed or (now - loginLastPlayed) >= 3600 then
             loginLastPlayed = now
-            PlayRandom("LOGIN", true, 7)
+            PlayRandom("LOGIN", true)
         end
     elseif event == "UNIT_SPELLCAST_SENT" then
         -- params: unit, target, castGUID, spellID
