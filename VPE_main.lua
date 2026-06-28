@@ -4,7 +4,7 @@ if classId ~= 2 then return end
 local VPE_settings = VPE_settings or {}
 local VPE_soundEnabled = VPE_settings.soundEnabled ~= false
 local VPE_debugEnabled = VPE_settings.debugEnabled == true
-local VPE_GLOBAL_CD = VPE_settings.globalCD or 2
+local VPE_GLOBAL_CD = VPE_settings.globalCD or 0
 
 local function VPE_Debug(msg)
     if VPE_debugEnabled then
@@ -197,7 +197,7 @@ frame:SetScript("OnEvent", function(_, event, ...)
         local now = GetTime()
         if not loginLastPlayed or (now - loginLastPlayed) >= 3600 then
             loginLastPlayed = now
-            PlayRandom("LOGIN", true)
+            PlayRandom("LOGIN")
         end
     elseif event == "UNIT_SPELLCAST_SENT" then
         -- params: unit, target, castGUID, spellID
