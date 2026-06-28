@@ -2,7 +2,7 @@
 ## Interface-Retail: 120001
 ## Title: |cffFFFFFFVarathraz's |r|cffF58CBAPaladin|r|cffFFFFFFExperience|r
 ## Notes: Experience Paladin gameplay with the voice of Tirion Fordring
-## Author: Deniz Ugur
+## Author: Deniz Ugur, Mert Aral
 ## Version: 1.0.0
 ## SavedVariablesPerCharacter: VPE_settings
 ## IconAtlas: classicon-paladin

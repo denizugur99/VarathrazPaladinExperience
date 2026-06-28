@@ -27,10 +27,10 @@ local VPE_lastPlayed = {}
 local ADDON_PATH = "Interface\\AddOns\\VarathrazPaladinExperience\\sounds\\"
 
 local function PlayRandom(category, force, protectDuration)
-    if not VPE_soundEnabled then VPE_Debug("PlayRandom: ses kapalı") return end
+    if not VPE_soundEnabled then return end
     local now = GetTime()
-    if not force and not CanPlay() then VPE_Debug("PlayRandom: global CD engelledi") return end
-    if force and now < VPE_playLock then VPE_Debug("PlayRandom: playLock engelledi (lock=" .. VPE_playLock .. " now=" .. now .. ")") return end
+    if not force and not CanPlay() then return end
+    if force and now < VPE_playLock then return end
 
     local sounds = VPE_Sounds[category]
     if not sounds or #sounds == 0 then return end
@@ -62,7 +62,6 @@ local function PlayRandom(category, force, protectDuration)
 
     VPE_Debug("[" .. category .. "] playing: " .. chosen)
     local ok, _, handle = pcall(PlaySoundFile, ADDON_PATH .. chosen, "Dialog")
-    VPE_Debug("PlayRandom: pcall ok=" .. tostring(ok) .. " handle=" .. tostring(handle))
     if ok and handle and protectDuration then
         VPE_playLock = now + protectDuration
     end
@@ -81,7 +80,7 @@ VPE_Sounds = {
     AGGRO    = { {"aggro\\aggro_1.ogg", 1}, {"aggro\\aggro_2.ogg", 1}, {"aggro\\aggro_3.ogg", 1} },
     DEATH    = { {"death\\death_1.ogg", 1}, {"death\\death_2.ogg", 1}, {"death\\death_3.ogg", 1}, {"death\\death_4.ogg", 1} },
     REVIVE     = { {"revive\\revive_1.ogg", 1} },
-    REDEMPTION = { {"redemption\\canlanma_1.ogg", 1} },
+    REDEMPTION = { {"redemption\\REDEMPTION.ogg", 1} },
     MOUNT    = { {"mount\\mount_1.ogg", 1}, {"mount\\mount_2.ogg", 1}, {"mount\\mount_3.ogg", 1} },
     AFKSTART = { {"afkstart\\afkmusic_1.mp3", 1} },
     AFKEND   = { {"afkend\\afkend_1.ogg", 1} },
@@ -102,7 +101,7 @@ VPE_Sounds = {
     WINGS          = { {"wings\\wings_1.ogg", 1}, {"wings\\wings_2.ogg", 1}, {"wings\\wings_3.ogg", 1} },
     AURAMASTERY    = { {"auramastery\\auramastery_1.ogg", 1} },
     ARDENTDEFENDER = { {"ardentdefender\\ardentdefender_1.ogg", 1} },
-    ANCIENTKINGS   = { {"ancientkings\\ancientkingskesme_1.ogg", 1} },
+    ANCIENTKINGS   = { {"ancientkings\\ancientkings.ogg", 1} },
     CR             = { {"cr\\cr_1.ogg", 1}, {"cr\\cr_2.ogg", 1}, {"cr\\cr_3.ogg", 1} },
     ABSOLUTION     = { {"absolution\\absolution_1.ogg", 1} },
 }
@@ -113,7 +112,7 @@ local SpellToSound = {
     [31884]  = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Wrath
     [216331] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Avenging Crusader
     [389539] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Sentinel
-    [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6 }, -- Wake of Ashes (Radiant Glory)
+    [255937] = { cat = "WINGS", prob = 1.0, force = true, anyCombat = true, protect = 6, requiresSpell = 458359 }, -- Wake of Ashes (sadece Radiant Glory alındıysa)
     [633]    = { cat = "LAYONHANDS",     prob = 1.0, force = true,  anyCombat = true},
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0, force = true,  anyCombat = true },              
@@ -150,6 +149,7 @@ local function HandleResolvedSpell(spellID, fromCastStart)
     end
     if fromCastStart and not cfg.onCastStart then return end
     if not fromCastStart and cfg.onCastStart then return end
+    if cfg.requiresSpell and not IsPlayerSpell(cfg.requiresSpell) then return end
     if not cfg.anyCombat and not InCombatLockdown() then return end
     VPE_Debug("spell=" .. tostring(spellID) .. " → " .. cfg.cat)
     if math.random() > cfg.prob then return end
@@ -280,22 +280,11 @@ SlashCmdList["VPE"] = function(msg)
         else
             print("|cffF58CBAVarathraz Paladin Experience:|r Usage: /vpe cd <seconds>")
         end
-    elseif cmd == "buffs" then
-        print("|cffF58CBAVarathraz Paladin Experience:|r Aktif buff'lar:")
-        local i = 1
-        while true do
-            local aura = C_UnitAuras.GetAuraDataByIndex("player", i, "HELPFUL")
-            if not aura then break end
-            print(string.format("  [%d] %s (spellID=%d)", i, aura.name, aura.spellId or 0))
-            i = i + 1
-        end
-        if i == 1 then print("  (buff yok)") end
     else
         print("|cffF58CBAVarathraz Paladin Experience:|r Commands:")
         print("  /vpe on    — enable sounds")
         print("  /vpe off   — disable sounds")
         print("  /vpe debug — toggle debug output")
         print("  /vpe cd <seconds> — set global cooldown between sounds")
-        print("  /vpe buffs — tüm aktif buff'ları listele")
     end
 end
