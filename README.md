@@ -1,6 +1,28 @@
-# Varathraz's Paladin Experience
+# Varathraz: Tirion's Legacy Paladin Voice Pack
 
-Experience Paladin gameplay with the voice of Tirion Fordring.
+Tirion Fordring voice lines for Paladin gameplay.
+
+Whether you are leading a righteous charge against the forces of darkness, judging the wicked in world PvP, or simply inspiring your allies in the presence of the Light, live the fantasy exactly as Varathraz lives it, and let Tirion's booming voice carry your righteous zeal.
+
+---
+
+## Features
+
+- Spell-triggered sounds — Avenging Wrath, Lay on Hands, Divine Shield, Guardian of Ancient Kings, Ardent Defender, and more
+- Ambient event sounds for login, combat entry, death, revive, mounting, self-target, and AFK status
+- Dialog channel — plays through WoW's Dialog audio channel so it sits cleanly on top of music and effects
+- Force sounds bypass the global cooldown and cut through whatever is currently playing
+- Protect durations lock out non-force sounds after major cooldowns
+- Weighted random selection with repeat penalty to reduce back-to-back duplicates
+- Minimal configuration via `/vpe` chat commands
+
+---
+
+## Installation
+
+1. Download the latest release from CurseForge
+2. Extract the ZIP into your WoW AddOns folder: `World of Warcraft\_retail_\Interface\AddOns\`
+3. Make sure the folder is named **VarathrazPaladinExperience** and enable it from the AddOns menu in-game
 
 ---
 

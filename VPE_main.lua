@@ -3,7 +3,7 @@ if classId ~= 2 then return end
 
 local VPE_settings = VPE_settings or {}
 local VPE_soundEnabled = VPE_settings.soundEnabled ~= false
-local VPE_debugEnabled = VPE_settings.debugEnabled == true
+local VPE_debugEnabled = false -- VPE_settings.debugEnabled == true
 local VPE_GLOBAL_CD = VPE_settings.globalCD or 0
 
 local function VPE_Debug(msg)
@@ -72,8 +72,8 @@ local function PlayRandom(category, force, protectDuration)
 
     VPE_lastPlayed[category] = chosen
 
-    -- Force: mevcut her sesi durdurur (protect dahil)
-    -- Non-force: sadece non-force sesi durdurur
+    -- Force: stops whatever is playing (including protected sounds)
+    -- Non-force: only stops another non-force sound
     if force then
         if VPE_currentHandle then pcall(StopSound, VPE_currentHandle) end
         VPE_playLock = 0
@@ -144,7 +144,7 @@ local SpellToSound = {
     [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0,     anyCombat = true },               
     [391054] = { cat = "CR",             prob = 1.0, force = true,  anyCombat = true  }, -- Intercession (combat res)
     [7328]   = { cat = "REVIVE",      prob = 1.0, anyCombat = true, onCastStart = true ,protect = 8},  -- Redemption (res on ally)
-    -- Cast-start triggers (onCastStart = true → fires on UNIT_SPELLCAST_START, not SENT)
+    -- Cast-start triggers (onCastStart = true → fires on UNIT_SPELLCAST_START, not SUCCEEDED)
     [212056] = { cat = "ABSOLUTION",  prob = 1.0, anyCombat = true, onCastStart = true,protect = 8 }, -- Mass Resurrection / Absolution (verify ID in-game)
     -- Utility / off-GCD (allow outside combat)
     [53563]  = { cat = "BEACON",         prob = 1.0, anyCombat = true }, -- Beacon of Light
