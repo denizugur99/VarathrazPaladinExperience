@@ -90,7 +90,7 @@ local function PlayRandom(category, force, protectDuration)
 end
 
 VPE_Sounds = {
-    LOGIN    = { {"login\\login_1.ogg", 1, 12}, {"login\\login_2.ogg", 1, 7} },
+    LOGIN    = { {"login\\login_1.ogg", 1, 12} },
     SELECT   = {
         {"select\\select_0.ogg", 1},
         {"select\\select_1.ogg", 1},
@@ -140,6 +140,7 @@ local SpellToSound = {
     [642]    = { cat = "BUBBLE",         prob = 1.0, force = true,  anyCombat = true, protect = 3 },
     [31821]  = { cat = "AURAMASTERY",    prob = 1.0,   anyCombat = true },              
     [86659]  = { cat = "ANCIENTKINGS",   prob = 1.0, force = true,  anyCombat = true },
+    [228049] = { cat = "ANCIENTKINGS",   prob = 1.0, force = true,  anyCombat = true },
     [31850]  = { cat = "ARDENTDEFENDER", prob = 1.0,     anyCombat = true },               
     [391054] = { cat = "CR",             prob = 1.0, force = true,  anyCombat = true  }, -- Intercession (combat res)
     [7328]   = { cat = "REVIVE",      prob = 1.0, anyCombat = true, onCastStart = true ,protect = 8},  -- Redemption (res on ally)
@@ -160,7 +161,8 @@ local SpellToSound = {
     [6940]   = { cat = "SACRIFICE",  prob = 1.0 ,    anyCombat = true },
     [4987]   = { cat = "CLEANSE",    prob = 1.0 ,    anyCombat = true },           -- Cleanse (Holy)
     [213644] = { cat = "CLEANSE",    prob = 1.0 ,    anyCombat = true },           -- Cleanse Toxins (Prot/Ret)
-    [62124]  = { cat = "TAUNT",      prob = 1.0 ,anyCombat = true  },
+    [62124]  = { cat = "TAUNT",      prob = 1.0, anyCombat = true },
+    [207028] = { cat = "TAUNT",      prob = 1.0, anyCombat = true },
     [853]    = { cat = "STUN",       prob = 1.0 ,    anyCombat = true },
     [96231]  = { cat = "INTERRUPT",  prob = 1.0 ,    anyCombat = true },
 }
@@ -192,7 +194,7 @@ local POLL          = 0.2
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:RegisterEvent("UNIT_SPELLCAST_SENT")
+frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 frame:RegisterEvent("UNIT_SPELLCAST_START")
 
 local loginLastPlayed = nil
@@ -204,9 +206,9 @@ frame:SetScript("OnEvent", function(_, event, ...)
             loginLastPlayed = now
             PlayRandom("LOGIN", true)
         end
-    elseif event == "UNIT_SPELLCAST_SENT" then
-        -- params: unit, target, castGUID, spellID
-        local unit, _, _, spellID = ...
+    elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
+        -- params: unit, castGUID, spellID
+        local unit, _, spellID = ...
         if unit == "player" then HandleResolvedSpell(spellID, false) end
     elseif event == "UNIT_SPELLCAST_START" then
         local unit, _, spellID = ...
