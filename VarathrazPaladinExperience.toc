@@ -1,6 +1,6 @@
 ## Interface: 120001
 ## Interface-Retail: 120001
-## Title: |cffFFFFFFVarathraz: |r|cffF58CBATirion's Legacy|r|cffFFFFFF Paladin Voice Pack|r
+## Title: |cffFFFFFFVarathraz - |r|cffF58CBATirions Legacy|r|cffFFFFFF Paladin Voice Pack|r
 ## Notes: Tirion Fordring voice lines for Paladin gameplay
 ## Author: Deniz Ugur, Mert Aral
 ## Version: 1.0.0

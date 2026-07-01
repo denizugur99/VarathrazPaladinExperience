@@ -1,4 +1,4 @@
-# Varathraz: Tirion's Legacy Paladin Voice Pack — Sound Reference
+# Varathraz - Tirions Legacy Paladin Voice Pack — Sound Reference
 
 All sound files must be in `.ogg` format (except AFK music which uses `.mp3`) and play through the **Dialog** channel.
 

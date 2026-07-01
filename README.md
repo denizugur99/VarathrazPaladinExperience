@@ -1,4 +1,4 @@
-# Varathraz: Tirion's Legacy Paladin Voice Pack
+# Varathraz - Tirions Legacy Paladin Voice Pack
 
 Tirion Fordring voice lines for Paladin gameplay.
 
@@ -20,9 +20,11 @@ Whether you are leading a righteous charge against the forces of darkness, judgi
 
 ## Installation
 
-1. Download the latest release from CurseForge
-2. Extract the ZIP into your WoW AddOns folder: `World of Warcraft\_retail_\Interface\AddOns\`
-3. Make sure the folder is named **VarathrazPaladinExperience** and enable it from the AddOns menu in-game
+1. Download the latest release from CurseForge or GitHub
+2. Extract the ZIP into your WoW AddOns folder:
+   `World of Warcraft\_retail_\Interface\AddOns\`
+3. Make sure the extracted folder is named **VarathrazPaladinExperience**
+4. Launch WoW, click **AddOns** on the character select screen, and make sure **Varathraz - Tirions Legacy Paladin Voice Pack** is enabled
 
 ---
 
