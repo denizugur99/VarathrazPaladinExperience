@@ -251,7 +251,8 @@ frame:SetScript("OnUpdate", function(_, elapsed)
     prevMounted = mounted
 
     -- AFK
-    local isAFK = UnitIsAFK("player")
+    local ok, isAFK = pcall(UnitIsAFK, "player")
+    if not ok then isAFK = false end
     if isAFK and not prevAFK then
         VPE_Debug("state: AFK")
         if VPE_soundEnabled then
