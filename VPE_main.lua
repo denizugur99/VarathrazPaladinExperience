@@ -251,26 +251,34 @@ frame:SetScript("OnUpdate", function(_, elapsed)
     prevMounted = mounted
 
     -- AFK
-    local ok, isAFK = pcall(UnitIsAFK, "player")
-    if not ok then isAFK = false end
-    if isAFK and not prevAFK then
+    local okAFK, afkEvent = pcall(function()
+        local isAFK = UnitIsAFK("player")
+        if isAFK and not prevAFK then
+            prevAFK = true
+            return "AFKSTART"
+        elseif not isAFK and prevAFK then
+            prevAFK = false
+            return "AFKEND"
+        end
+    end)
+    if okAFK and afkEvent == "AFKSTART" then
         VPE_Debug("state: AFK")
         if VPE_soundEnabled then
             local _, _, handle = pcall(PlaySoundFile, ADDON_PATH .. "afkstart\\afkmusic_1.mp3", "Dialog")
             afkSoundHandle = handle
         end
-    elseif not isAFK and prevAFK then
+    elseif okAFK and afkEvent == "AFKEND" then
         VPE_Debug("state: AFKEND")
         if afkSoundHandle then
-            StopSound(afkSoundHandle)
+            pcall(StopSound, afkSoundHandle)
             afkSoundHandle = nil
         end
         PlayRandom("AFKEND", true)
     end
-    prevAFK = isAFK
 
     -- Self-target
-    local selfTarget = UnitExists("target") and UnitIsUnit("target", "player")
+    local okTarget, selfTarget = pcall(function() return UnitExists("target") and UnitIsUnit("target", "player") end)
+    if not okTarget then selfTarget = false end
     if selfTarget and not prevSelfTarget then
         VPE_Debug("state: SELF-TARGET")
         PlayRandom("SELECT")
